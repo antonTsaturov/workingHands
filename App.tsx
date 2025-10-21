@@ -40,23 +40,9 @@ function App(): React.JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <ScrollView
-        style={backgroundStyle}>
-        <View style={{paddingRight: safePadding, paddingLeft: safePadding}}>
-        
-        <Location/>
-        <JobList/>
-        
-        </View>
-      </ScrollView>
+      <JobList/>
     </View>
   );
 }
-
-//const styles = StyleSheet.create({
-  //container: {
-    //backgroundColor:'gray'
-  //}
-//});
 
 export default App;

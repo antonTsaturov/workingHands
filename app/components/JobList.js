@@ -7,7 +7,10 @@ import {
   useColorScheme,
   View,
   Button,
-  ActivityIndicator
+  ActivityIndicator,
+  FlatList,
+  Image,
+  Pressable
 } from 'react-native';
 
 import {StoreData} from './asyncstorage'
@@ -17,7 +20,6 @@ const getData = async () => {
   let result;
   try {
     const jsonValue = await AsyncStorage.getItem('location');
-    //console.log(JSON.parse(jsonValue));
     jsonValue != null ? result = JSON.parse(jsonValue) : null;
     return result;
   } catch (e) {
@@ -28,7 +30,7 @@ const getData = async () => {
 
 
 const JobList = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   
@@ -44,7 +46,7 @@ const JobList = () => {
       }
       
       const jsonData = await response.json();
-      setData(jsonData);
+      setData(jsonData.data);
     } catch (err) {
       setError(err.message);
       console.error('Fetch error:', err);
@@ -63,25 +65,61 @@ const JobList = () => {
   } 
   
   return (
-    <View>
-      <Button
-        onPress={()=> {getList()}}
-        title={'Посмотреть смены'}
-      />
-
-      {loading && <ActivityIndicator size="large" />}
+    <View style={styles.container}>
+    
+      {loading && (
+        <View>
+          <ActivityIndicator size="large" color="#0000ff" />
+          <Text style={{ textAlign: 'center', marginTop: 20 }}>
+            Загружаем информацию...
+          </Text>
+        </View>
+      )}
       
       {error && (
         <Text style={styles.error}>Error: {error}</Text>
       )}
       
-      {data && (
-        <View style={styles.dataContainer}>
-          <Text style={styles.title}>{data.title}</Text>
-          <Text>{data.body}</Text>
-        </View>
-      )}
+      <FlatList
+        contentContainerStyle={{marginTop: 18, padding:'2%'}}
+        data={data}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <Pressable>
+            <View style={styles.listItem}>
+              <View style={styles.row}>
+                <View>
+                  <Text>Адрес: {item.address.length > 10 && item.address.slice(0, 17)+'...' }</Text>
+                  <Text>Компания: {item.companyName.length > 10 ? item.companyName.slice(0, 17)+'...' : item.companyName}</Text>
+                  <Text>Цена/Чел.: {item.priceWorker} / {item.planWorkers}</Text>
+                  
+                </View>
+                <View style={{borderWidth:0, flex:1, justifyContent:'center'}}>
+                  <Image
+                    source={{uri: item.logo}}
+                    style={{ width: 50, height: 50, alignSelf: 'flex-end'}}
+                  />
+                </View>
+              </View>
+            </View>
+          </Pressable>
+        )}
+        ListEmptyComponent={
+          loading ? null : (
+            <Text style={{ textAlign: 'center', marginTop: 20 }}>
+              Информация о сменах еще не загружена...
+            </Text>
+            
+          )
+        }
+      />
       
+      <View style={styles.btn}>
+        <Button
+          onPress={()=> {getList()}}
+          title={'Посмотреть смены'}
+        />
+      </View>
       
     </View>
   );
@@ -90,8 +128,10 @@ const JobList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    justifyContent: 'center',
+    //padding: 20,
+    //justifyContent: 'end',
+    //verticalAlign:'center',
+    borderWidth:0
   },
   dataContainer: {
     marginTop: 20,
@@ -108,6 +148,30 @@ const styles = StyleSheet.create({
     color: 'red',
     marginTop: 10,
   },
+  listItem: {
+    height:70,
+    borderRadius:3,
+    borderWidth:1,
+    borderColor:'#BFBFBF',
+    marginBottom:5,
+    padding:5,
+    backgroundColor:'#E5E5E5',
+    elevation:4
+  },
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+    //justifyContent: 'center',
+  },
+  btn: {
+    borderWidth:0,
+    flex:0,
+    position: 'end',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 10,
+  }
 });
 
 export default JobList;
