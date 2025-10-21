@@ -69,7 +69,7 @@ const Location = () => {
   }, []);
 
   return (
-    <View style={{ padding: 20 }}>
+    <View style={{ padding: 0 }}>
       {location ? (
         <View>
           {/*

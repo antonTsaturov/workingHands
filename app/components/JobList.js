@@ -85,7 +85,7 @@ const JobList = ({navigation}) => {
       */}
     
       {loading && (
-        <View>
+        <View style={{marginTop:20}}>
           <ActivityIndicator size="large" color="#0000ff" />
           <Text style={{ textAlign: 'center', marginTop: 20 }}>
             Загружаем информацию...
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     borderWidth:0
   },
   dataContainer: {
-    marginTop: 20,
+    marginTop: 0,
     padding: 10,
     backgroundColor: '#f0f0f0',
     borderRadius: 5,
@@ -193,10 +193,10 @@ const styles = StyleSheet.create({
   btn: {
     borderWidth:0,
     flex:0,
-    position: 'end',
-    bottom: 0,
-    left: 0,
-    right: 0,
+    //position: 'end',
+    //bottom: 0,
+    //left: 0,
+    //right: 0,
     padding: 10,
   }
 });
