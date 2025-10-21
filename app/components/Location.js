@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, PermissionsAndroid, Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+//import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const storeData = async (value) => {
-  try {
-    const jsonValue = JSON.stringify(value);
-    await AsyncStorage.setItem('location', jsonValue);
-  } catch (e) {
-      console.log(e);
-  }
-};
+//const storeData = async (value) => {
+  //try {
+    //const jsonValue = JSON.stringify(value);
+    //await AsyncStorage.setItem('location', jsonValue);
+  //} catch (e) {
+      //console.log(e);
+  //}
+//};
+
+import StoreData from '../classes/StoreData';
 
 const Location = () => {
   const [location, setLocation] = useState(null);
@@ -69,7 +71,8 @@ const Location = () => {
         showLocationDialog: true,
       }
     );
-    location ? storeData({lat: location.latitude, long: location.longitude}) : null;
+    //location ? storeData({lat: location.latitude, long: location.longitude}) : null;
+    location ? await StoreData.saveData('location', {lat: location.latitude, long: location.longitude}) : console.log('Error in getLocation');
   };
 
   useEffect(() => {

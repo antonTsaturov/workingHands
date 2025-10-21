@@ -13,20 +13,22 @@ import {
   Pressable
 } from 'react-native';
 
-import {StoreData} from './asyncstorage'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+//import {StoreData} from './asyncstorage'
+import StoreData from '../classes/StoreData';
 
-const getData = async () => {
-  let result;
-  try {
-    const jsonValue = await AsyncStorage.getItem('location');
-    jsonValue != null ? result = JSON.parse(jsonValue) : null;
-    return result;
-  } catch (e) {
-      console.log(e);
-  }
+//import AsyncStorage from '@react-native-async-storage/async-storage';
+
+//const getData = async () => {
+  //let result;
+  //try {
+    //const jsonValue = await AsyncStorage.getItem('location');
+    //jsonValue != null ? result = JSON.parse(jsonValue) : null;
+    //return result;
+  //} catch (e) {
+      //console.log(e);
+  //}
   
-};
+//};
 
 
 const JobList = () => {
@@ -47,17 +49,21 @@ const JobList = () => {
       
       const jsonData = await response.json();
       setData(jsonData.data);
+      
     } catch (err) {
       setError(err.message);
       console.error('Fetch error:', err);
+      
     } finally {
       setLoading(false);
+      
     }
   };
   
   
   async function getList(){
-    let coordinates = await getData();
+    //let coordinates = await getData();
+    let coordinates = await StoreData.getData('location');
     //console.log(coordinates.lat);
     let link = 'https://mobile.handswork.pro/api/shifts/map-list-unauthorized?latitude='+coordinates.lat+'&longitude='+coordinates.long
     fetchData(link);
