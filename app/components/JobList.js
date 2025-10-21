@@ -16,6 +16,9 @@ import {
 //import {StoreData} from './asyncstorage'
 import StoreData from '../classes/StoreData';
 
+//Modal Card
+import ModalCard from './ModalCard';
+
 //import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //const getData = async () => {
@@ -35,6 +38,8 @@ const JobList = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
   
   const fetchData = async (link) => {
     setLoading(true);
@@ -49,6 +54,7 @@ const JobList = () => {
       
       const jsonData = await response.json();
       setData(jsonData.data);
+      await StoreData.saveData('joblist', data) 
       
     } catch (err) {
       setError(err.message);
@@ -70,8 +76,21 @@ const JobList = () => {
     console.log(data);
   } 
   
+  const hadleModalBtnPress = () => {
+    setModalVisible(false);
+  }
+  
+  const [id, setId] = useState(null);
+  
   return (
     <View style={styles.container}>
+    
+      <ModalCard
+        visible={modalVisible}
+        id={id}
+        data={data}
+        onCustomPress={hadleModalBtnPress}
+      />
     
       {loading && (
         <View>
@@ -91,7 +110,12 @@ const JobList = () => {
         data={data}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <Pressable>
+          <Pressable
+            onPress={()=>{
+              setModalVisible(true)
+              setId(item.id);
+            }}
+          >
             <View style={styles.listItem}>
               <View style={styles.row}>
                 <View>
