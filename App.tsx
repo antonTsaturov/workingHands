@@ -20,7 +20,7 @@ const RootStack = createNativeStackNavigator({
     Home: {
       screen: HomeScreen,
       options: {
-        title: '',
+        title: 'Список смен',
       }
     },
     Details: {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   ScrollView,
   StatusBar,
@@ -10,22 +10,29 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
-  Pressable
+  TouchableOpacity,
 } from 'react-native';
 
 import StoreData from '../classes/StoreData';
 
-//My components
-import ModalCard from './ModalCard';
+//import ModalCard from './ModalCard';
 import Location from './Location';
 
+  const NoImage = () => {
+    return (
+      <Image
+        source={ require('../assets/icon/no-image.png')}
+        style={{ width: 50, height: 50, alignSelf: 'flex-end'}}
+      />
+    )
+  }
 
 const JobList = ({navigation}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
-
+  //const [modalVisible, setModalVisible] = useState(false);
+  
   
   const fetchData = async (link) => {
     setLoading(true);
@@ -40,7 +47,7 @@ const JobList = ({navigation}) => {
       
       const jsonData = await response.json();
       setData(jsonData.data);
-      await StoreData.saveData('joblist', data) 
+      //await StoreData.saveData('joblist', data) 
       
     } catch (err) {
       setError(err.message);
@@ -60,11 +67,10 @@ const JobList = ({navigation}) => {
     console.log(data);
   } 
   
-  const hadleModalBtnPress = () => {
-    setModalVisible(false);
-  }
-  
-  const [id, setId] = useState(null);
+  //const hadleModalBtnPress = () => {
+    //setModalVisible(false);
+  //}
+    
   
   return (
     <View style={styles.container}>
@@ -95,8 +101,9 @@ const JobList = ({navigation}) => {
         contentContainerStyle={{marginTop: 18, padding:'2%'}}
         data={data}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <Pressable
+        renderItem={({ item, index }) => (
+          <TouchableOpacity
+            activeOpacity={0.5}
             onPress={()=>{
               navigation.navigate('Details', {
                 id: item.id,
@@ -106,6 +113,7 @@ const JobList = ({navigation}) => {
               //setId(item.id);
             }}
           >
+          
             <View style={styles.listItem}>
               <View style={styles.row}>
                 <View>
@@ -115,14 +123,16 @@ const JobList = ({navigation}) => {
                   
                 </View>
                 <View style={{borderWidth:0, flex:1, justifyContent:'center'}}>
-                  <Image
-                    source={ item.logo ? {uri: item.logo} : 'No image'}
-                    style={{ width: 50, height: 50, alignSelf: 'flex-end'}}
-                  />
+                  {item.logo ?
+                    <Image
+                      source={ {uri: item?.logo }}
+                      style={{ width: 50, height: 50, alignSelf: 'flex-end'}}
+                    /> : <NoImage/>
+                  }
                 </View>
               </View>
             </View>
-          </Pressable>
+          </TouchableOpacity>
         )}
         ListEmptyComponent={
           loading ? null : (

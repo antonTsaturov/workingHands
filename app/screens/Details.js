@@ -1,18 +1,13 @@
 import React from 'react';
 import {
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
-  Button
 } from 'react-native';
 
 function DetailScreen({ route }) {
   
   const { id, data } = route.params;
-  console.log(data);
   
   const details = [
     {title: 'Адрес объекта', data: data.address, },
@@ -28,10 +23,14 @@ function DetailScreen({ route }) {
   
   return (
     <View style={styles.container}>
-      {details.map( item => (
+      {details.map( (item, index) => (
         <View>
-          <Text style={{fontWeight:'bold', marginTop:10}}>{item.title}</Text>
-          <Text>{item.data}</Text>
+          <Text key={'Title'+index} style={{fontWeight:'bold', marginTop:10}}>
+            {item.title}
+          </Text>
+          <Text key={'Data'+index}>
+            {item.data ? item.data : '-'}
+          </Text>
         </View>
         ))}
     </View>
