@@ -12,43 +12,28 @@ import {
 function DetailScreen({ route }) {
   
   const { id, data } = route.params;
+  console.log(data);
+  
+  const details = [
+    {title: 'Адрес объекта', data: data.address, },
+    {title: 'Компания-наниматель', data: data.companyName, },
+    {title: 'Рейтинг', data: data.customerRating, },
+    {title: 'Дата начала работ', data: data.dateStartByCity, },
+    {title: 'Рабочее время', data: 'c ' + data.timeStartByCity + ' до '+ data.timeEndByCity, },
+    {title: 'Выплата за смену', data: data.priceWorker, },
+    {title: 'Тип услуг', data: Object.values(data.workTypes[0].name), },
+    {title: 'Требуемое количество работников', data: data.planWorkers, },
+    {title: 'Набрано', data: data.currentWorkers, },
+  ]
   
   return (
     <View style={styles.container}>
-      {data?.map((item, index) => (
-        item.id === id &&
+      {details.map( item => (
         <View>
-            <Text style={{fontWeight:'bold', marginTop:10}}>Адрес объекта</Text>
-            <Text>{item.address}</Text>
-            
-            <Text style={{fontWeight:'bold', marginTop:10}}>Компания-наниматель</Text>
-            <Text>{item.companyName}</Text>
-            
-            <Text style={{fontWeight:'bold', marginTop:10}}>Рейтинг</Text>
-            <Text>{item.customerRating ? item.customerRating : '-'}</Text>
-            
-            <Text style={{fontWeight:'bold', marginTop:10}}>Дата начала работ</Text>
-            <Text>{item.dateStartByCity}</Text>
-            
-            <Text style={{fontWeight:'bold', marginTop:10}}>Рабочие часы</Text>
-            <Text>с {item.timeEndByCity} до {item.timeStartByCity}</Text>
-            
-            <Text style={{fontWeight:'bold', marginTop:10}}>Выплата за смену</Text>
-            <Text>{item.priceWorker}</Text>
-            
-            <Text style={{fontWeight:'bold', marginTop:10}}>Тип работ</Text>
-            {item.workTypes.map(type=>(
-              <Text>{type.name}</Text>
-            ))}
-            
-            <Text style={{fontWeight:'bold', marginTop:10}}>Требуемое количество работников</Text>
-            <Text>{item.planWorkers} человек</Text>
-            
-            <Text style={{fontWeight:'bold', marginTop:10}}>Набрано</Text>
-            <Text>{item.currentWorkers}</Text>
-          
+          <Text style={{fontWeight:'bold', marginTop:10}}>{item.title}</Text>
+          <Text>{item.data}</Text>
         </View>
-      ))}
+        ))}
     </View>
   );
 }

@@ -100,7 +100,7 @@ const JobList = ({navigation}) => {
             onPress={()=>{
               navigation.navigate('Details', {
                 id: item.id,
-                data: data,
+                data: item,
               })
               //setModalVisible(true)
               //setId(item.id);
