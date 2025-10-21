@@ -1,5 +1,4 @@
-import React from 'react';
-//import type {PropsWithChildren} from 'react';
+import * as React from 'react';
 import {
   ScrollView,
   StatusBar,
@@ -10,39 +9,31 @@ import {
   Button
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { createStaticNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-//My components
-import Location from './app/components/Location';
-import JobList from './app/components/JobList';
+import HomeScreen from './app/screens/Home';
+import DetailScreen from './app/screens/Details';
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const RootStack = createNativeStackNavigator({
+  screens: {
+    Home: {
+      screen: HomeScreen,
+      options: {
+        title: '',
+      }
+    },
+    Details: {
+      screen: DetailScreen,
+      options: {
+        title: 'Подробная информация',
+      },
+    },
+  },
+});
 
-  const backgroundStyle = {
-    //backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    backgroundColor:'lightgray',
-    flex:1,
-    
-  };
+const Navigation = createStaticNavigation(RootStack);
 
-  const safePadding = '5%';
-
-  return (
-    <View style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <JobList/>
-    </View>
-  );
+export default function App() {
+  return <Navigation />;
 }
-
-export default App;

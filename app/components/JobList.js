@@ -13,28 +13,14 @@ import {
   Pressable
 } from 'react-native';
 
-//import {StoreData} from './asyncstorage'
 import StoreData from '../classes/StoreData';
 
-//Modal Card
+//My components
 import ModalCard from './ModalCard';
-
-//import AsyncStorage from '@react-native-async-storage/async-storage';
-
-//const getData = async () => {
-  //let result;
-  //try {
-    //const jsonValue = await AsyncStorage.getItem('location');
-    //jsonValue != null ? result = JSON.parse(jsonValue) : null;
-    //return result;
-  //} catch (e) {
-      //console.log(e);
-  //}
-  
-//};
+import Location from './Location';
 
 
-const JobList = () => {
+const JobList = ({navigation}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -68,9 +54,7 @@ const JobList = () => {
   
   
   async function getList(){
-    //let coordinates = await getData();
     let coordinates = await StoreData.getData('location');
-    //console.log(coordinates.lat);
     let link = 'https://mobile.handswork.pro/api/shifts/map-list-unauthorized?latitude='+coordinates.lat+'&longitude='+coordinates.long
     fetchData(link);
     console.log(data);
@@ -84,13 +68,15 @@ const JobList = () => {
   
   return (
     <View style={styles.container}>
-    
-      <ModalCard
-        visible={modalVisible}
-        id={id}
-        data={data}
-        onCustomPress={hadleModalBtnPress}
-      />
+      <Location/>
+      {/*
+        <ModalCard
+          visible={modalVisible}
+          id={id}
+          data={data}
+          onCustomPress={hadleModalBtnPress}
+        />
+      */}
     
       {loading && (
         <View>
@@ -112,8 +98,12 @@ const JobList = () => {
         renderItem={({ item }) => (
           <Pressable
             onPress={()=>{
-              setModalVisible(true)
-              setId(item.id);
+              navigation.navigate('Details', {
+                id: item.id,
+                data: data,
+              })
+              //setModalVisible(true)
+              //setId(item.id);
             }}
           >
             <View style={styles.listItem}>
@@ -121,12 +111,12 @@ const JobList = () => {
                 <View>
                   <Text>Адрес: {item.address.length > 10 && item.address.slice(0, 17)+'...' }</Text>
                   <Text>Компания: {item.companyName.length > 10 ? item.companyName.slice(0, 17)+'...' : item.companyName}</Text>
-                  <Text>Цена/Чел.: {item.priceWorker} / {item.planWorkers}</Text>
+                  <Text>Цена: {item.priceWorker}</Text>
                   
                 </View>
                 <View style={{borderWidth:0, flex:1, justifyContent:'center'}}>
                   <Image
-                    source={{uri: item.logo}}
+                    source={ item.logo ? {uri: item.logo} : 'No image'}
                     style={{ width: 50, height: 50, alignSelf: 'flex-end'}}
                   />
                 </View>
@@ -158,9 +148,6 @@ const JobList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //padding: 20,
-    //justifyContent: 'end',
-    //verticalAlign:'center',
     borderWidth:0
   },
   dataContainer: {

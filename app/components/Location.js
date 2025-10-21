@@ -1,16 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, PermissionsAndroid, Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-//import AsyncStorage from '@react-native-async-storage/async-storage';
-
-//const storeData = async (value) => {
-  //try {
-    //const jsonValue = JSON.stringify(value);
-    //await AsyncStorage.setItem('location', jsonValue);
-  //} catch (e) {
-      //console.log(e);
-  //}
-//};
 
 import StoreData from '../classes/StoreData';
 
@@ -71,7 +61,6 @@ const Location = () => {
         showLocationDialog: true,
       }
     );
-    //location ? storeData({lat: location.latitude, long: location.longitude}) : null;
     location ? await StoreData.saveData('location', {lat: location.latitude, long: location.longitude}) : console.log('Error in getLocation');
   };
 
@@ -83,12 +72,14 @@ const Location = () => {
     <View style={{ padding: 20 }}>
       {location ? (
         <View>
-          <Text>Latitude: {location.latitude}</Text>
-          <Text>Longitude: {location.longitude}</Text>
-          <Text>Accuracy: {location.accuracy} meters</Text>
-          <Text>Altitude: {location.altitude || 'N/A'}</Text>
-          <Text>Heading: {location.heading || 'N/A'}</Text>
-          <Text>Speed: {location.speed || 'N/A'}</Text>
+          {/*
+            <Text>Latitude: {location.latitude}</Text>
+            <Text>Longitude: {location.longitude}</Text>
+            <Text>Accuracy: {location.accuracy} meters</Text>
+            <Text>Altitude: {location.altitude || 'N/A'}</Text>
+            <Text>Heading: {location.heading || 'N/A'}</Text>
+            <Text>Speed: {location.speed || 'N/A'}</Text>
+          */}
         </View>
       ) : (
         <Text>Getting location...</Text>
