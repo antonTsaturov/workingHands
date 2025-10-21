@@ -38,7 +38,7 @@ const ModalCard = ({id, data, visible, onCustomPress}) => {
                     <Text style={{fontWeight:'bold', marginTop:10}}>Адрес объекта</Text>
                     <Text>{item.address}</Text>
                     
-                    <Text style={{fontWeight:'bold', marginTop:10}}>Компания</Text>
+                    <Text style={{fontWeight:'bold', marginTop:10}}>Компания-наниматель</Text>
                     <Text>{item.companyName}</Text>
                     
                     <Text style={{fontWeight:'bold', marginTop:10}}>Рейтинг</Text>
@@ -50,7 +50,7 @@ const ModalCard = ({id, data, visible, onCustomPress}) => {
                     <Text style={{fontWeight:'bold', marginTop:10}}>Рабочие часы</Text>
                     <Text>с {item.timeEndByCity} до {item.timeStartByCity}</Text>
                     
-                    <Text style={{fontWeight:'bold', marginTop:10}}>Стоимость</Text>
+                    <Text style={{fontWeight:'bold', marginTop:10}}>Выплата за смену</Text>
                     <Text>{item.priceWorker}</Text>
                     
                     <Text style={{fontWeight:'bold', marginTop:10}}>Тип работ</Text>
@@ -58,8 +58,11 @@ const ModalCard = ({id, data, visible, onCustomPress}) => {
                       <Text>{type.name}</Text>
                     ))}
                     
-                    <Text style={{fontWeight:'bold', marginTop:10}}>Количество работников</Text>
-                    <Text>{item.planWorkers}</Text>
+                    <Text style={{fontWeight:'bold', marginTop:10}}>Требуемое количество работников</Text>
+                    <Text>{item.planWorkers} человек</Text>
+                    
+                    <Text style={{fontWeight:'bold', marginTop:10}}>Набрано</Text>
+                    <Text>{item.currentWorkers}</Text>
                     
                   </ScrollView>
                 </View>
